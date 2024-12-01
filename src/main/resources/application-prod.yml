@@ -1,0 +1,6 @@
+spring:
+  jpa:
+    show-sql: false
+  # Liquibase config :: prod
+  liquibase:
+    contexts: prod

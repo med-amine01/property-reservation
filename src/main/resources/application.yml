@@ -1,3 +1,27 @@
+# Server configuration
+server:
+  port: 8099
+
 spring:
   application:
     name: property-reservation
+  profiles:
+    active: dev
+  # H2 database config
+  datasource:
+    url: jdbc:h2:mem:prop_res_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  # Liquibase config
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.yml
