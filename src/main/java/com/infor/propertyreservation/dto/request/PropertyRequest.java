@@ -28,6 +28,6 @@ public class PropertyRequest {
 	@DecimalMin(value = "0.0")
 	private BigDecimal maxPrice;
 
-	private boolean availability;
+	private Boolean availability;
 
 }
