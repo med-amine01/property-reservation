@@ -46,10 +46,13 @@ public class PropertySpecification {
 				predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("pricePerDay"), request.getMaxPrice()));
 			}
 
-			if (request.isAvailability()) {
-				predicates.add(criteriaBuilder.equal(root.get("availability"), true));
-			} else {
-				predicates.add(criteriaBuilder.equal(root.get("availability"), false));
+			if (request.getAvailability() != null) {
+				if (request.getAvailability()) {
+					predicates.add(criteriaBuilder.equal(root.get("availability"), true));
+				}
+				else {
+					predicates.add(criteriaBuilder.equal(root.get("availability"), false));
+				}
 			}
 
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
