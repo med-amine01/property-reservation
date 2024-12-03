@@ -18,9 +18,9 @@ public class PropertySpecification {
 		return (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
 
-			if (request.getName() != null) {
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
-						"%" + request.getName().toLowerCase() + "%"));
+			if (request.getBuildingName() != null) {
+				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("buildingName")),
+						"%" + request.getBuildingName().toLowerCase() + "%"));
 			}
 
 			if (request.getCity() != null) {

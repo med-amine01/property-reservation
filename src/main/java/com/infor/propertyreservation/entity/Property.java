@@ -11,15 +11,15 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "properties",
-		indexes = { @Index(name = "idx_name_lower", columnList = "name"),
+		indexes = { @Index(name = "idx_building_name_lower", columnList = "building_name"),
 				@Index(name = "idx_city_lower", columnList = "city"),
 				@Index(name = "idx_address_lower", columnList = "address"),
 				@Index(name = "idx_country_lower", columnList = "country"),
 				@Index(name = "idx_price_per_day", columnList = "price_per_day") })
 public class Property extends AbstractEntity {
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "building_name", nullable = false)
+	private String buildingName;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "property_type", nullable = false)

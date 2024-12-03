@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 public class PropertyRequest {
 
-	private String name;
+	private String buildingName;
 
 	private String city;
 

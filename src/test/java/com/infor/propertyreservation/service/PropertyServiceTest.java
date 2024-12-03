@@ -50,11 +50,11 @@ class PropertyServiceImplTest {
 		int page = 0;
 		int size = 10;
 		PropertyRequest propertyRequest = new PropertyRequest();
-		propertyRequest.setName("Test Property");
+		propertyRequest.setBuildingName("Test Property");
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
 
 		Property property = new Property();
-		property.setName("Test Property");
+		property.setBuildingName("Test Property");
 		property.setCity("Test City");
 		property.setCountry("US");
 		property.setAddress("123 Test St");
@@ -86,7 +86,7 @@ class PropertyServiceImplTest {
 		int page = 0;
 		int size = 10;
 		PropertyRequest propertyRequest = new PropertyRequest();
-		propertyRequest.setName("Nonexistent Property");
+		propertyRequest.setBuildingName("Nonexistent Property");
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
 
 		Page<Property> emptyPropertyPage = new PageImpl<>(Collections.emptyList());

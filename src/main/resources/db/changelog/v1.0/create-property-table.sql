@@ -9,7 +9,7 @@ CREATE TABLE properties
     id            BIGINT AUTO_INCREMENT NOT NULL,
     created_at    TIMESTAMP             NOT NULL,
     updated_at    TIMESTAMP             NULL,
-    name          VARCHAR(255)          NOT NULL,
+    building_name VARCHAR(255)          NOT NULL,
     property_type VARCHAR(255)          NOT NULL,
     city          VARCHAR(255)          NOT NULL,
     country       VARCHAR(3)            NOT NULL,
@@ -19,8 +19,8 @@ CREATE TABLE properties
     CONSTRAINT pk_properties PRIMARY KEY (id)
 );
 
--- Add index for case-insensitive search on name
-CREATE INDEX idx_name_lower ON properties (name);
+-- Add index for case-insensitive search on buildingName
+CREATE INDEX idx_building_name_lower ON properties (building_name);
 
 -- Add index for case-insensitive search on city
 CREATE INDEX idx_city_lower ON properties (city);

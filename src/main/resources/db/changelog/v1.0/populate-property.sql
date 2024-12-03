@@ -2,7 +2,7 @@
 
 -- changeset med-amine-chebbi:1733051554796
 -- Insert multiple properties into the properties table
-INSERT INTO properties(id, created_at, updated_at, name, property_type, city, country, address, price_per_day,
+INSERT INTO properties(id, created_at, updated_at, building_name, property_type, city, country, address, price_per_day,
                        availability)
 VALUES (1, CURRENT_TIMESTAMP, NULL, 'Hotel Paris', 'HOTEL_ROOM', 'Paris', 'FRA', 'Champs Elysees', 300.00, true),
        (2, CURRENT_TIMESTAMP, NULL, 'Beach Resort', 'HOTEL_ROOM', 'Miami', 'USA', 'Ocean Drive', 500.00, true),
