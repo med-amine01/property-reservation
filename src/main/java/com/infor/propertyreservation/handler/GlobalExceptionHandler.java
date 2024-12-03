@@ -1,6 +1,8 @@
 package com.infor.propertyreservation.handler;
 
 import com.infor.propertyreservation.exception.PropertyNotFoundException;
+import com.infor.propertyreservation.exception.PropertyUnavailableException;
+import com.infor.propertyreservation.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
@@ -76,6 +78,22 @@ public class GlobalExceptionHandler {
 		logError(request, ex);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 			.body(new ApiCallError<>("PROPERTY_NOT_FOUND", List.of(ex.getMessage())));
+	}
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ApiCallError<String>> handlePropertyNotFoundException(HttpServletRequest request,
+			UserNotFoundException ex) {
+		logError(request, ex);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+			.body(new ApiCallError<>("USER_NOT_FOUND", List.of(ex.getMessage())));
+	}
+
+	@ExceptionHandler(PropertyUnavailableException.class)
+	public ResponseEntity<ApiCallError<String>> handlePropertyNotFoundException(HttpServletRequest request,
+			PropertyUnavailableException ex) {
+		logError(request, ex);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			.body(new ApiCallError<>("PROPERTY_UNAVAILABLE", List.of(ex.getMessage())));
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)

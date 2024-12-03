@@ -10,6 +10,7 @@ public class PropertyMapper {
 
 	public PropertyResponse toResponse(Property property) {
 		return new PropertyResponse(
+				property.getId(),
 				property.getBuildingName(),
 				property.getPropertyType(),
 				property.getCity(),

@@ -6,10 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class PropertyRequest {
+public class ReservationSearchFilter {
+
+	private Long userId;
 
 	private String buildingName;
 
@@ -26,6 +29,8 @@ public class PropertyRequest {
 	@DecimalMin(value = "0.0", inclusive = false, message = "Maximum price must be greater than 0.")
 	private BigDecimal maxPrice;
 
-	private Boolean availability;
+	private LocalDateTime startDate;
+
+	private LocalDateTime endDate;
 
 }
