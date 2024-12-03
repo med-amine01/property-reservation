@@ -3,7 +3,6 @@
 -- changeset med-amine-chebbi:1733051554796-1
 -- preconditions onFail:MARK_RAN onError:MARK_RAN
 -- precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where table_name = 'properties';
-
 CREATE TABLE properties
 (
     id            BIGINT AUTO_INCREMENT NOT NULL,

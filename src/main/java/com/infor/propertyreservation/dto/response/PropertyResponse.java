@@ -5,6 +5,12 @@ import com.infor.propertyreservation.enums.PropertyType;
 
 import java.math.BigDecimal;
 
-public record PropertyResponse(String buildingName, PropertyType propertyType, String city, String country, String address,
-							   BigDecimal price, AvailabilityStatus availability) {
+public record PropertyResponse(Long id,
+							   String buildingName,
+							   PropertyType propertyType,
+							   String city,
+							   String country,
+							   String address,
+							   BigDecimal price,
+							   AvailabilityStatus availability) {
 }
