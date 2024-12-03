@@ -1,138 +1,105 @@
-//package com.infor.propertyreservation.service;
-//
-//import com.infor.propertyreservation.dto.request.PropertyRequest;
-//import com.infor.propertyreservation.dto.response.PropertyResponse;
-//import com.infor.propertyreservation.entity.Property;
-//import com.infor.propertyreservation.enums.PropertyType;
-//import com.infor.propertyreservation.exception.PropertyNotFoundException;
-//import com.infor.propertyreservation.mapper.PropertyMapper;
-//import com.infor.propertyreservation.repository.PropertyRepository;
-//import com.infor.propertyreservation.service.impl.PropertyServiceImpl;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageImpl;
-//import org.springframework.data.domain.PageRequest;
-//import org.springframework.data.domain.Pageable;
-//
-//import java.math.BigDecimal;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.*;
-//
-//@DisplayName("Unit Tests for PropertyService")
-//class PropertyServiceTest {
-//
-//	@Mock
-//	private PropertyRepository propertyRepository;
-//
-//	@Mock
-//	private PropertyMapper propertyMapper;
-//
-//	private PropertyService propertyService;
-//
-//	@BeforeEach
-//	void setUp() {
-//		MockitoAnnotations.openMocks(this);
-//		propertyService = new PropertyServiceImpl(propertyRepository, propertyMapper);
-//	}
-//
-//	@Test
-//	@DisplayName("getProperties with valid pagination should return paginated properties")
-//	void getProperties_ValidPagination_ReturnsPaginatedProperties() {
-//		Pageable pageable = PageRequest.of(0, 5);
-//		Property property = new Property();
-//		property.setId(1L);
-//		property.setBuildingName("Ocean View");
-//
-//		PropertyResponse response = new PropertyResponse(1L, "Ocean View", PropertyType.FLAT, "San Francisco", "USA",
-//				"123 Beach St", new BigDecimal("150.00"));
-//
-//		when(propertyRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(property)));
-//		when(propertyMapper.toResponse(property)).thenReturn(response);
-//
-//		Page<PropertyResponse> result = propertyService.getProperties(pageable);
-//
-//		assertNotNull(result);
-//		assertEquals(1, result.getTotalElements());
-//		assertEquals("Ocean View", result.getContent().get(0).getBuildingName());
-//		verify(propertyRepository, times(1)).findAll(pageable);
-//		verify(propertyMapper, times(1)).toResponse(property);
-//	}
-//
-//	@Test
-//	@DisplayName("getPropertyById with existing ID should return the property")
-//	void getPropertyById_ExistingId_ReturnsProperty() {
-//		Property property = new Property();
-//		property.setId(1L);
-//		property.setBuildingName("Ocean View");
-//
-//		PropertyResponse response = new PropertyResponse(1L, "Ocean View", PropertyType.FLAT, "San Francisco", "USA",
-//				"123 Beach St", new BigDecimal("150.00"));
-//
-//		when(propertyRepository.findById(1L)).thenReturn(Optional.of(property));
-//		when(propertyMapper.toResponse(property)).thenReturn(response);
-//
-//		PropertyResponse result = propertyService.getPropertyById(1L);
-//
-//		assertNotNull(result);
-//		assertEquals("Ocean View", result.getBuildingName());
-//		verify(propertyRepository, times(1)).findById(1L);
-//		verify(propertyMapper, times(1)).toResponse(property);
-//	}
-//
-//	@Test
-//	@DisplayName("getPropertyById with non-existent ID should throw PropertyNotFoundException")
-//	void getPropertyById_NonExistentId_ThrowsException() {
-//		when(propertyRepository.findById(1L)).thenReturn(Optional.empty());
-//
-//		assertThrows(PropertyNotFoundException.class, () -> propertyService.getPropertyById(1L));
-//		verify(propertyRepository, times(1)).findById(1L);
-//	}
-//
-//	@Test
-//	@DisplayName("createProperty with valid request should save and return the property")
-//	void createProperty_ValidRequest_SavesAndReturnsProperty() {
-//		PropertyRequest request = PropertyRequest.builder()
-//			.buildingName("Ocean View")
-//			.propertyType(PropertyType.FLAT)
-//			.city("San Francisco")
-//			.country("USA")
-//			.address("123 Beach St")
-//			.pricePerDay(new BigDecimal("150.00"))
-//			.build();
-//
-//		Property property = new Property();
-//		property.setId(1L);
-//
-//		PropertyResponse response = new PropertyResponse(1L, "Ocean View", PropertyType.FLAT, "San Francisco", "USA",
-//				"123 Beach St", new BigDecimal("150.00"));
-//
-//		when(propertyMapper.toEntity(request)).thenReturn(property);
-//		when(propertyRepository.save(property)).thenReturn(property);
-//		when(propertyMapper.toResponse(property)).thenReturn(response);
-//
-//		PropertyResponse result = propertyService.createProperty(request);
-//
-//		assertNotNull(result);
-//		assertEquals("Ocean View", result.getBuildingName());
-//		verify(propertyMapper, times(1)).toEntity(request);
-//		verify(propertyRepository, times(1)).save(property);
-//		verify(propertyMapper, times(1)).toResponse(property);
-//	}
-//
-//	@Test
-//	@DisplayName("deleteProperty with non-existent ID should throw PropertyNotFoundException")
-//	void deleteProperty_NonExistentId_ThrowsException() {
-//		when(propertyRepository.existsById(1L)).thenReturn(false);
-//
-//		assertThrows(PropertyNotFoundException.class, () -> propertyService.deleteProperty(1L));
-//		verify(propertyRepository, times(1)).existsById(1L);
-//	}
-//
-//}
+package com.infor.propertyreservation.service;
+
+import com.infor.propertyreservation.dto.request.PropertyRequest;
+import com.infor.propertyreservation.dto.response.PropertyResponse;
+import com.infor.propertyreservation.entity.Property;
+import com.infor.propertyreservation.enums.AvailabilityStatus;
+import com.infor.propertyreservation.enums.PropertyType;
+import com.infor.propertyreservation.mapper.PropertyMapper;
+import com.infor.propertyreservation.repository.PropertyRepository;
+import com.infor.propertyreservation.service.impl.PropertyServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+class PropertyServiceImplTest {
+
+	@Mock
+	private PropertyRepository propertyRepository;
+
+	@Mock
+	private PropertyMapper propertyMapper;
+
+	@InjectMocks
+	private PropertyServiceImpl propertyService;
+
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
+
+	@Test
+	void getProperties_WithValidRequest_ReturnsPropertyPage() {
+		// Arrange
+		int page = 0;
+		int size = 10;
+		PropertyRequest propertyRequest = new PropertyRequest();
+		propertyRequest.setName("Test Property");
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+
+		Property property = new Property();
+		property.setName("Test Property");
+		property.setCity("Test City");
+		property.setCountry("US");
+		property.setAddress("123 Test St");
+		property.setPricePerDay(BigDecimal.valueOf(100.0));
+		property.setPropertyType(PropertyType.HOTEL_ROOM);
+		property.setAvailability(true);
+
+		PropertyResponse propertyResponse = new PropertyResponse("Test Property", PropertyType.HOTEL_ROOM, "Test City",
+				"US", "123 Test St", BigDecimal.valueOf(100.0), AvailabilityStatus.AVAILABLE);
+
+		Page<Property> propertyPage = new PageImpl<>(List.of(property));
+
+		when(propertyRepository.findAll(any(Specification.class), eq(pageRequest))).thenReturn(propertyPage);
+		when(propertyMapper.toResponse(property)).thenReturn(propertyResponse);
+
+		// Act
+		Page<PropertyResponse> result = propertyService.getProperties(page, size, propertyRequest);
+
+		// Assert
+		assertEquals(1, result.getTotalElements());
+		assertEquals(propertyResponse, result.getContent().get(0));
+		verify(propertyRepository, times(1)).findAll(any(Specification.class), eq(pageRequest));
+		verify(propertyMapper, times(1)).toResponse(property);
+	}
+
+	@Test
+	void getProperties_WithNoMatchingProperties_ReturnsEmptyPage() {
+		// Arrange
+		int page = 0;
+		int size = 10;
+		PropertyRequest propertyRequest = new PropertyRequest();
+		propertyRequest.setName("Nonexistent Property");
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+
+		Page<Property> emptyPropertyPage = new PageImpl<>(Collections.emptyList());
+
+		when(propertyRepository.findAll(any(Specification.class), eq(pageRequest))).thenReturn(emptyPropertyPage);
+
+		// Act
+		Page<PropertyResponse> result = propertyService.getProperties(page, size, propertyRequest);
+
+		// Assert
+		assertEquals(0, result.getTotalElements());
+		verify(propertyRepository, times(1)).findAll(any(Specification.class), eq(pageRequest));
+		verify(propertyMapper, never()).toResponse(any(Property.class));
+	}
+
+}
