@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  backend:
+    image: medaminechebbi/propertyreservation:latest
+    container_name: propertyreservation-app
+    ports:
+      - "8099:8099"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      ENVIRONMENT: prod
+    volumes:
+      - ./logs:/logs
+
+  frontend:
+    image: medaminechebbi/propease-frontend:latest
+    container_name: propease-frontend-app
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
