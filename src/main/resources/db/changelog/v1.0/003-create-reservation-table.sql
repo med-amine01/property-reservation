@@ -26,3 +26,16 @@ ALTER TABLE reservations
 ALTER TABLE reservations
     ADD CONSTRAINT FK_RESERVATIONS_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);
 
+
+-- changeset med-amine-chebbi:1733219757838-4
+-- Add index for case-insensitive search on user
+CREATE INDEX idx_user_id ON reservations (user_id);
+
+-- Add index for case-insensitive search on property
+CREATE INDEX idx_property_id ON reservations (property_id);
+
+-- Add index for case-insensitive search on start_date
+CREATE INDEX idx_start_date ON reservations (start_date);
+
+-- Add index for case-insensitive search on end_date
+CREATE INDEX idx_end_date ON reservations (end_date);

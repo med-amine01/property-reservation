@@ -2,14 +2,16 @@ package com.infor.propertyreservation.dto.request;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class ReservationSearchFilter {
 
 	private Long userId;
@@ -29,8 +31,8 @@ public class ReservationSearchFilter {
 	@DecimalMin(value = "0.0", inclusive = false, message = "Maximum price must be greater than 0.")
 	private BigDecimal maxPrice;
 
-	private LocalDateTime startDate;
+	private LocalDate startDate;
 
-	private LocalDateTime endDate;
+	private LocalDate endDate;
 
 }

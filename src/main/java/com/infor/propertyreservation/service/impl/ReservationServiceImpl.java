@@ -13,6 +13,7 @@ import com.infor.propertyreservation.exception.PropertyUnavailableException;
 import com.infor.propertyreservation.exception.UserNotFoundException;
 import com.infor.propertyreservation.mapper.ReservationMapper;
 import com.infor.propertyreservation.repository.PropertyRepository;
+import com.infor.propertyreservation.repository.ReservationFilterRepository;
 import com.infor.propertyreservation.repository.ReservationRepository;
 import com.infor.propertyreservation.repository.UserRepository;
 import com.infor.propertyreservation.service.ReservationService;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,8 @@ public class ReservationServiceImpl implements ReservationService {
 
 	private final ReservationRepository reservationRepository;
 
+	private final ReservationFilterRepository reservationFilterRepository;
+
 	private final PropertyRepository propertyRepository;
 
 	private final UserRepository userRepository;
@@ -41,6 +45,8 @@ public class ReservationServiceImpl implements ReservationService {
 	private static final double HOTEL_DISCOUNT = 0.15;
 
 	private static final double FLAT_DISCOUNT = 0.10;
+
+	private static final double ADDED_TAX = 0.05;
 
 	@Override
 	public void createReservation(ReservationRequest request) {
@@ -76,7 +82,7 @@ public class ReservationServiceImpl implements ReservationService {
 		// Calculate tax if duration exceeds 10 days
 		BigDecimal tax = BigDecimal.ZERO;
 		if (days > 10) {
-			tax = baseCost.subtract(discount).multiply(BigDecimal.valueOf(0.05));
+			tax = baseCost.subtract(discount).multiply(BigDecimal.valueOf(ADDED_TAX));
 		}
 
 		BigDecimal finalCost = baseCost.subtract(discount).add(tax);
@@ -100,16 +106,24 @@ public class ReservationServiceImpl implements ReservationService {
 
 	@Override
 	public ReservationSummaryResponse listReservations(ReservationSearchFilter request, PropertyType propertyType) {
-		List<Reservation> reservations = reservationRepository.findFilteredReservations(request.getUserId(),
-				propertyType, request.getBuildingName(), request.getCity(), request.getAddress(), request.getCountry(),
-				request.getMinPrice(), request.getMaxPrice(), request.getStartDate(), request.getEndDate());
+		LocalDate startDate = request.getStartDate();
+		LocalDate endDate = request.getEndDate();
+
+		if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+			throw new IllegalArgumentException("Reservation period not valid");
+		}
+
+		List<Reservation> reservations = reservationFilterRepository.findFilteredReservations(request, propertyType);
 
 		BigDecimal totalMoneySpentOnFlats = computeTotalMoneySpent(reservations, PropertyType.FLAT);
 		BigDecimal totalMoneySpentOnHotelRooms = computeTotalMoneySpent(reservations, PropertyType.HOTEL_ROOM);
 		BigDecimal totalMoneySpent = totalMoneySpentOnFlats.add(totalMoneySpentOnHotelRooms);
 		String mostVisitedCity = findMostVisitedCity(reservations);
 
+		// We could sort by id desc here to display latest reservation => already managed
+		// in query builder
 		List<ReservationResponse> reservationResponses = reservations.stream()
+			// .sorted(Comparator.comparing(Reservation::getId).reversed())
 			.map(reservationMapper::toResponse)
 			.toList();
 
