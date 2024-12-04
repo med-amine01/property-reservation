@@ -18,8 +18,12 @@ CREATE TABLE properties
     CONSTRAINT pk_properties PRIMARY KEY (id)
 );
 
+-- changeset med-amine-chebbi:1733051554796-2
 -- Add index for case-insensitive search on buildingName
 CREATE INDEX idx_building_name_lower ON properties (building_name);
+
+-- Add index for case-insensitive search on property_type
+CREATE INDEX idx_property_type ON properties (property_type);
 
 -- Add index for case-insensitive search on city
 CREATE INDEX idx_city_lower ON properties (city);
@@ -29,6 +33,3 @@ CREATE INDEX idx_address_lower ON properties (address);
 
 -- Add index for case-insensitive search on country
 CREATE INDEX idx_country_lower ON properties (country);
-
--- Add index for range queries on price_per_day
-CREATE INDEX idx_price_per_day ON properties (price_per_day);

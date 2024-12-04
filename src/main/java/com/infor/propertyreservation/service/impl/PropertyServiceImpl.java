@@ -5,7 +5,7 @@ import com.infor.propertyreservation.dto.response.PropertyResponse;
 import com.infor.propertyreservation.mapper.PropertyMapper;
 import com.infor.propertyreservation.repository.PropertyRepository;
 import com.infor.propertyreservation.service.PropertyService;
-import com.infor.propertyreservation.specification.PropertySpecification;
+import com.infor.propertyreservation.util.PropertySpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

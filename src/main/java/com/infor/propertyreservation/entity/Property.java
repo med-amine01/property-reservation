@@ -12,10 +12,10 @@ import java.math.BigDecimal;
 @Setter
 @Table(name = "properties",
 		indexes = { @Index(name = "idx_building_name_lower", columnList = "building_name"),
+				@Index(name = "idx_property_type", columnList = "property_type"),
 				@Index(name = "idx_city_lower", columnList = "city"),
 				@Index(name = "idx_address_lower", columnList = "address"),
-				@Index(name = "idx_country_lower", columnList = "country"),
-				@Index(name = "idx_price_per_day", columnList = "price_per_day") })
+				@Index(name = "idx_country_lower", columnList = "country") })
 public class Property extends AbstractEntity {
 
 	@Column(name = "building_name", nullable = false)

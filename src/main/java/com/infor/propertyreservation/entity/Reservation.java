@@ -10,9 +10,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@Table(name = "reservations")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "reservations",
+		indexes = { @Index(name = "idx_user_id", columnList = "user_id"),
+				@Index(name = "idx_property_id", columnList = "property_id"),
+				@Index(name = "idx_start_date", columnList = "start_date"),
+				@Index(name = "idx_end_date", columnList = "end_date") })
 public class Reservation extends AbstractEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
